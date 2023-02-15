@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="itlapr.DAL.Core.BaseEntity">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAAAAAAAAAAAAAAAAAAkAAAACAAAAAACABAAAAAAAA=</HashCode>
+      <FileName>Core\BaseEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="itlapr.DAL.Core.Person">
+    <Position X="2" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Core\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="itlapr.DAL.Entities.Professor">
+    <Position X="1.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Professor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="itlapr.DAL.Entities.Student">
+    <Position X="3.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Student.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="itlapr.DAL.Entities.Course">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAgEAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Course.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="itlapr.DAL.Entities.Department">
+    <Position X="6.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAQAAAEAAAAAAAAAAEAAgAA=</HashCode>
+      <FileName>Entities\Department.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

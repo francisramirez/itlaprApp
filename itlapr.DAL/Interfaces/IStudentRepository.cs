@@ -15,9 +15,9 @@ namespace itlapr.DAL.Interfaces
 
         void Remove(Student student);
 
-        Student Get(int id);
+        Student GetById(int id);
 
-        bool Exists(int Name);
+        bool Exists(string Name);
 
     }
 }

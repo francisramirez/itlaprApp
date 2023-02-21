@@ -30,7 +30,7 @@ namespace itlapr.API.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var deparment = _departmentRepository.Get(id);
+            var deparment = _departmentRepository.GetById(id);
 
             return Ok(deparment);
         }

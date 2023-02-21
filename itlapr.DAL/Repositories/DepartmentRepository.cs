@@ -24,7 +24,7 @@ namespace itlapr.DAL.Repositories
         {
             return _itlaContext.Departments.Any(cd => cd.Name == Name);
         }
-        public Department Get(int id)
+        public Department GetById(int id)
         {
             return _itlaContext.Departments.Find(id);
         }
@@ -48,7 +48,7 @@ namespace itlapr.DAL.Repositories
         {
             try
             {
-                Department departmentToRemove = this.Get(department.DepartmentID);
+                Department departmentToRemove = this.GetById(department.DepartmentID);
 
                 departmentToRemove.DeletedDate = DateTime.Now;
                 departmentToRemove.Deleted = true;
@@ -94,7 +94,7 @@ namespace itlapr.DAL.Repositories
         {
             try
             {
-                Department departmentToUpdate = this.Get(department.DepartmentID);
+                Department departmentToUpdate = this.GetById(department.DepartmentID);
 
                 departmentToUpdate.DepartmentID = department.DepartmentID;
                 departmentToUpdate.Name = department.Name;

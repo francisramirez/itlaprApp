@@ -16,7 +16,7 @@ namespace itlapr.DAL.Interfaces
 
         void Remove(Department  department);
 
-        Department Get(int id);
+        Department GetById(int id);
 
         bool Exists(string Name);
     }

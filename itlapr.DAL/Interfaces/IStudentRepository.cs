@@ -7,7 +7,7 @@ namespace itlapr.DAL.Interfaces
 {
     public interface IStudentRepository
     {
-        List<StudentModel> GetAll();
+        List<Student> GetAll();
 
         void Save(Student student);
 

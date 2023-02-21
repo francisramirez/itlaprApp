@@ -30,6 +30,7 @@ namespace itlapr.DAL.Repositories
         {
             return this.itlaContext.Students.ToList();
         }
+
         public Student GetById(int studentId)
         {
             return this.itlaContext.Students.Find(studentId);
@@ -96,9 +97,6 @@ namespace itlapr.DAL.Repositories
             }
         }
 
-        List<StudentModel> IStudentRepository.GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

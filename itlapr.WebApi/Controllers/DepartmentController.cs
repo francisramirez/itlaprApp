@@ -1,12 +1,10 @@
 ﻿using itlapr.DAL.Entities;
 using itlapr.DAL.Interfaces;
-using itlapr.DAL.Model;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace itlapr.API.Controllers
+namespace itlapr.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

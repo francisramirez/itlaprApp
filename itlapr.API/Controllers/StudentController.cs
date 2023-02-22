@@ -21,7 +21,7 @@ namespace itlapr.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var students = _studentRepository.GetAll();
+            var students = _studentRepository.GetEntities();
             return Ok(students);
         }
 

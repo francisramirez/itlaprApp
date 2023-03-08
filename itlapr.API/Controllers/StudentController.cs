@@ -1,4 +1,5 @@
 ﻿using itlapr.BLL.Contract;
+using itlapr.BLL.Dtos.Student;
 using itlapr.DAL.Interfaces;
 using itlapr.DAL.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -45,21 +46,38 @@ namespace itlapr.API.Controllers
         }
 
         // POST api/<StudentController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("SaveStudent")]
+        public IActionResult Post([FromBody] StudentSaveDto studentSaveDto)
         {
+            var result = this.studentService.SaveStudent(studentSaveDto);
+
+            if (result.Success)
+                return Ok(result);
+            else
+                return BadRequest(result);
         }
 
-        // PUT api/<StudentController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // POST api/<StudentController>
+        [HttpPost("UpdateStudent")]
+        public IActionResult Put([FromBody] StudentUpdateDto studentUpdateDto)
         {
-        }
+            var result = this.studentService.UpdateStudent(studentUpdateDto);
 
-        // DELETE api/<StudentController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+            if (result.Success)
+                return Ok(result);
+            else
+                return BadRequest(result);  
+        }
+        // POST api/<StudentController>
+        [HttpPost("RemoveStudent")]
+        public IActionResult Remove([FromBody] StudentRemoveDto studentRemoveDto)
         {
+            var result = this.studentService.RemoveStudent(studentRemoveDto);
+
+            if (result.Success)
+                return Ok(result);
+            else
+                return BadRequest(result);
         }
     }
 }

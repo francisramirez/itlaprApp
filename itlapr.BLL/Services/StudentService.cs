@@ -2,10 +2,13 @@
 using itlapr.BLL.Core;
 using itlapr.BLL.Dtos.Student;
 using itlapr.BLL.Models;
+using itlapr.DAL.Entities;
+using itlapr.DAL.Exceptions;
 using itlapr.DAL.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Resources;
 
 namespace itlapr.BLL.Services
 {
@@ -29,7 +32,7 @@ namespace itlapr.BLL.Services
                 var students = this.studentRepository.GetEntities().Select(cd => new StudentResultModel()
                 {
                     CreationDate = cd.CreationDate,
-                    EnrollmentDate =  cd.EnrollmentDate.Value,
+                    EnrollmentDate = cd.EnrollmentDate.Value,
                     FirstName = cd.FirstName,
                     LastName = cd.LastName,
                     StudentId = cd.Id
@@ -51,7 +54,7 @@ namespace itlapr.BLL.Services
         public ServiceResult GetById(int Id)
         {
             ServiceResult result = new ServiceResult();
-            
+
             try
             {
                 var student = this.studentRepository.GetEntity(Id);
@@ -80,17 +83,99 @@ namespace itlapr.BLL.Services
 
         public ServiceResult RemoveStudent(StudentRemoveDto removeDto)
         {
-            throw new System.NotImplementedException();
+            ServiceResult result = new ServiceResult();
+
+            try
+            {
+                Student studentToRemove = this.studentRepository.GetEntity(removeDto.StudentId);
+
+                studentToRemove.Deleted = removeDto.Removed;
+                studentToRemove.DeletedDate = removeDto.RemoveDate;
+                studentToRemove.UserDeleted = removeDto.RemoveUser;
+
+                this.studentRepository.Update(studentToRemove);
+
+                result.Success = true;
+                result.Message = "El estudiante ha sido eliminado correctamente.";
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Ocurrió un error removiendo el estudiante";
+                result.Success = false;
+                this.logger.LogError($" {result.Message} ", ex.ToString());
+            }
+
+            return result;
         }
 
         public ServiceResult SaveStudent(StudentSaveDto saveDto)
         {
-            throw new System.NotImplementedException();
+            ServiceResult result = new ServiceResult();
+
+            try
+            {
+                Student student = new Student()
+                {
+                    CreationDate = saveDto.CreationDate,
+                    CreationUser = saveDto.CreationUser,
+                    FirstName = saveDto.FirstName,
+                    LastName = saveDto.LastName,
+                    EnrollmentDate = saveDto.EnrollmentDate
+                };
+
+                this.studentRepository.Save(student);
+                result.Success = true;
+                result.Message = "El estudiante ha sido agregado correctamente.";
+
+            }
+            catch (StudentDataException sdex) 
+            {
+                result.Message = sdex.Message;
+                result.Success = false;
+                this.logger.LogError(result.Message, sdex.ToString());
+            }
+            catch (Exception ex)
+            {
+                result.Message = "Ocurrió un error agregando el estudiante";
+                result.Success = false;
+                this.logger.LogError($" {result.Message} ", ex.ToString());
+            }
+
+            return result;
         }
 
         public ServiceResult UpdateStudent(StudentUpdateDto updateDto)
         {
-            throw new System.NotImplementedException();
+            ServiceResult result = new ServiceResult();
+
+            try
+            {
+                Student student = this.studentRepository.GetEntity(updateDto.StudentId);
+                student.ModifyDate = updateDto.ModifyDate;
+                student.UserMod = updateDto.ModifyUser;
+                student.FirstName = updateDto.FirstName;
+                student.LastName = updateDto.LastName;
+                student.EnrollmentDate = updateDto.EnrollmentDate;
+
+                this.studentRepository.Update(student);
+                result.Success = true;
+                result.Message = "El estudiante ha sido actualizado correctamente.";
+
+            }
+            catch (StudentDataException sdex)
+            {
+                result.Message = sdex.Message;
+                result.Success = false;
+                this.logger.LogError(result.Message, sdex.ToString());
+            }
+            catch (Exception ex)
+            {
+
+                result.Message = "Ocurrió un error actualizando el estudiante";
+                result.Success = false;
+                this.logger.LogError($" {result.Message} ", ex.ToString());
+            }
+            return result;
         }
     }
 }

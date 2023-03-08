@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TEST", "TEST", "{DB3DFCF8-1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "itlapr.Test", "itlapr.Test\itlapr.Test.csproj", "{95FABC16-B60F-48EE-855A-14483E055C2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "itlapr.WebApi", "itlapr.WebApi\itlapr.WebApi.csproj", "{B979CE35-44F2-4F48-9FA6-3C1479804B6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "itlapr.WebApi", "itlapr.WebApi\itlapr.WebApi.csproj", "{B979CE35-44F2-4F48-9FA6-3C1479804B6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

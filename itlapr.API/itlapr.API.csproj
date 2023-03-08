@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\itlapr.BLL\itlapr.BLL.csproj" />
     <ProjectReference Include="..\itlapr.DAL\itlapr.DAL.csproj" />
   </ItemGroup>
 

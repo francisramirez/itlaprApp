@@ -1,4 +1,5 @@
-﻿using itlapr.DAL.Interfaces;
+﻿using itlapr.BLL.Contract;
+using itlapr.DAL.Interfaces;
 using itlapr.DAL.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -11,25 +12,36 @@ namespace itlapr.API.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly IStudentRepository _studentRepository;
+        private readonly IStudentService studentService;
 
-        public StudentController(IStudentRepository studentRepository)
+        public StudentController(IStudentService studentService)
         {
-            _studentRepository = studentRepository;
+            this.studentService = studentService;
         }
         // GET: api/<StudentController>
         [HttpGet]
         public IActionResult Get()
         {
-            var students = _studentRepository.GetEntities();
-            return Ok(students);
+            var result = this.studentService.GetAll();
+
+            if (result.Success)
+                return Ok(result);
+            else 
+                return BadRequest(result);
+
+            
         }
 
         // GET api/<StudentController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            var result = this.studentService.GetById(id);
+
+            if (result.Success)
+                return Ok(result);
+            else
+                return BadRequest(result);
         }
 
         // POST api/<StudentController>

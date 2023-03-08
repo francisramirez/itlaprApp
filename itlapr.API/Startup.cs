@@ -1,3 +1,5 @@
+using itlapr.BLL.Contract;
+using itlapr.BLL.Services;
 using itlapr.DAL.Context;
 using itlapr.DAL.Interfaces;
 using itlapr.DAL.Repositories;
@@ -34,11 +36,13 @@ namespace itlapr.API
             services.AddDbContext<ItlaContext>(options => options.UseSqlServer(this.Configuration.GetConnectionString("ItlaContext")));
 
             //Repositories
-            services.AddTransient<IStudentRepository, StudentRepository>();
-            services.AddTransient<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
 
             //App Services
+            services.AddTransient<IStudentService, StudentService>();
+         
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

@@ -3,6 +3,7 @@ using itlapr.BLL.Services;
 using itlapr.DAL.Context;
 using itlapr.DAL.Interfaces;
 using itlapr.DAL.Repositories;
+using itlapr.API.Depndencies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace itlapr.API
 {
@@ -36,13 +32,17 @@ namespace itlapr.API
             services.AddDbContext<ItlaContext>(options => options.UseSqlServer(this.Configuration.GetConnectionString("ItlaContext")));
 
             //Repositories
-            services.AddScoped<IStudentRepository, StudentRepository>();
+            /// services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
 
             //App Services
-            services.AddTransient<IStudentService, StudentService>();
-         
+            //services.AddTransient<IStudentService, StudentService>();
+
+
+            //Dependencies
+            services.AddStudentDependency();
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

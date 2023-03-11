@@ -23,11 +23,15 @@ namespace itlapr.DAL.Repositories
 
         public override void Save(Student entity)
         {
-            // x logica //
-
-            if (string.IsNullOrEmpty(entity.FirstName))
+            if (this.Exists(cd => cd.FirstName == entity.FirstName))
             {
-                throw new StudentDataException("El nombre es requerido");
+                throw new StudentDataException("Este estudiante ya existe");
+            }
+
+            if (this.Exists(cd => cd.EnrollmentDate.Value.Date == DateTime.Now.Date 
+                            && cd.FirstName == entity.FirstName))
+            {
+                throw new StudentDataException("Este estudiante ya esta registrado para este dia.");
             }
 
             base.Save(entity);

@@ -5,6 +5,7 @@ using itlapr.BLL.Models;
 using itlapr.DAL.Entities;
 using itlapr.DAL.Exceptions;
 using itlapr.DAL.Interfaces;
+using itlapr.BLL.Extentions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -112,17 +113,44 @@ namespace itlapr.BLL.Services
         {
             ServiceResult result = new ServiceResult();
 
+            if (string.IsNullOrEmpty(saveDto.FirstName))
+            {
+                result.Success = false;
+                result.Message = "El nombre es requerido";
+                return result;
+            }
+
+            if (saveDto.FirstName.Length > 50)
+            {
+                result.Success = false;
+                result.Message = "La logitud del nombre es inválida";
+                return result;
+            }
+
+            if (string.IsNullOrEmpty(saveDto.LastName))
+            {
+                result.Success = false;
+                result.Message = "El apellido es requerido";
+                return result;
+            }
+            if (saveDto.FirstName.Length > 50)
+            {
+                result.Success = false;
+                result.Message = "La logintud del apellido es inválida";
+                return result;
+            }
+
+            if (!saveDto.EnrollmentDate.HasValue)
+            {
+                result.Success = false;
+                result.Message = "La fecha de inscripción es requerida.";
+                return result;
+
+            }
+
             try
             {
-                Student student = new Student()
-                {
-                    CreationDate = saveDto.CreationDate,
-                    CreationUser = saveDto.CreationUser,
-                    FirstName = saveDto.FirstName,
-                    LastName = saveDto.LastName,
-                    EnrollmentDate = saveDto.EnrollmentDate
-                };
-
+                Student student = saveDto.GetStudentEntityFromDtoSave();
                 this.studentRepository.Save(student);
                 result.Success = true;
                 result.Message = "El estudiante ha sido agregado correctamente.";
@@ -150,6 +178,42 @@ namespace itlapr.BLL.Services
 
             try
             {
+
+                if (string.IsNullOrEmpty(updateDto.FirstName))
+                {
+                    result.Success = false;
+                    result.Message = "El nombre es requerido";
+                    return result;
+                }
+
+                if (updateDto.FirstName.Length > 50)
+                {
+                    result.Success = false;
+                    result.Message = "La logitud del nombre es inválida";
+                    return result;
+                }
+
+                if (string.IsNullOrEmpty(updateDto.LastName))
+                {
+                    result.Success = false;
+                    result.Message = "El apellido es requerido";
+                    return result;
+                }
+                if (updateDto.FirstName.Length > 50)
+                {
+                    result.Success = false;
+                    result.Message = "La logintud del apellido es inválida";
+                    return result;
+                }
+
+                if (!updateDto.EnrollmentDate.HasValue)
+                {
+                    result.Success = false;
+                    result.Message = "La fecha de inscripción es requerida.";
+                    return result;
+
+                }
+
                 Student student = this.studentRepository.GetEntity(updateDto.StudentId);
                 student.ModifyDate = updateDto.ModifyDate;
                 student.UserMod = updateDto.ModifyUser;

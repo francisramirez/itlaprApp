@@ -15,6 +15,7 @@ namespace itlapr.DAL.Core
         {
             this.context = context;
             this.myDbSet = this.context.Set<TEntity>();
+
         }
         public virtual bool Exists(Expression<Func<TEntity, bool>> filter)
         {

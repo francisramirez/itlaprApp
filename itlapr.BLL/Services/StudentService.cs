@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Resources;
+using itlapr.BLL.Logger;
 
 namespace itlapr.BLL.Services
 {
@@ -111,6 +112,8 @@ namespace itlapr.BLL.Services
 
         public ServiceResult SaveStudent(StudentSaveDto saveDto)
         {
+
+            this.logger.LogInformation("Paso por aqui", saveDto.FirstName);
             ServiceResult result = new ServiceResult();
 
             if (string.IsNullOrEmpty(saveDto.FirstName))
@@ -155,6 +158,9 @@ namespace itlapr.BLL.Services
                 result.Success = true;
                 result.Message = "El estudiante ha sido agregado correctamente.";
 
+                this.logger.LogInformation(result.Message, result);
+                
+
             }
             catch (StudentDataException sdex) 
             {
@@ -167,6 +173,7 @@ namespace itlapr.BLL.Services
                 result.Message = "Ocurrió un error agregando el estudiante";
                 result.Success = false;
                 this.logger.LogError($" {result.Message} ", ex.ToString());
+               
             }
 
             return result;

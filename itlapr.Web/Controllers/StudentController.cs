@@ -1,58 +1,128 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using itlapr.Web.Models.Request;
+using itlapr.Web.Models.Response;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace itlapr.Web.Controllers
 {
     public class StudentController : Controller
     {
-        // GET: StudnetController
-        public ActionResult Index()
+        HttpClientHandler httpClientHandler = new HttpClientHandler();
+        private readonly ILogger<StudentController> logger;
+        private readonly IConfiguration configuration;
+
+        public StudentController(ILogger<StudentController> logger,
+                                 IConfiguration configuration)
         {
-            List<Models.StudentModel> students = new List<Models.StudentModel>()
-            {
-                new Models.StudentModel()
-                {
-                     Email = "adfadf", FirstName ="adfad", LastName ="adfasdf", StudentId = 1
-                },
-                new Models.StudentModel()
-                {
-                    Email = "adfad", FirstName ="adsfsda", LastName ="afasd", StudentId = 2
-                },
-                new Models.StudentModel()
-                {
-                    Email = "afdf", FirstName ="adfdf", LastName ="adfasd", StudentId = 3
-                },
-                new Models.StudentModel()
-                {
-                  Email = "asdfdsf", FirstName ="afsadfsda", LastName ="asdfsda", StudentId = 4
-                },
-
-            };
-
-            return View(students);
+            this.logger = logger;
+            this.configuration = configuration;
         }
-
-        // GET: StudnetController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Index()
         {
+            StudentListResponse studentListResponse = new StudentListResponse();
+
+            try
+            {
+                using (var httpClient = new HttpClient(this.httpClientHandler))
+                {
+                    var response = await httpClient.GetAsync("http://localhost:51810/api/Student");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        studentListResponse = JsonConvert.DeserializeObject<StudentListResponse>(apiResponse);
+                    }
+                    else
+                    {
+                        // realizar x logica //       
+                    }
+
+
+                }
+
+                return View(studentListResponse.data);
+
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError("Error obteniendo los estudiantes", ex.ToString());
+            }
             return View();
         }
 
-        // GET: StudnetController/Create
+
+        public async Task<ActionResult> Details(int id)
+        {
+
+            StudentResponse studentResponse = new StudentResponse();
+
+            using (var httpClient = new HttpClient(this.httpClientHandler))
+            {
+
+                var response = await httpClient.GetAsync($"http://localhost:51810/api/Student/" + id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    studentResponse = JsonConvert.DeserializeObject<StudentResponse>(apiResponse);
+                }
+                else
+                {
+                    // realizar x logica //       
+                }
+
+
+            }
+
+            return View(studentResponse.data);
+        }
+
+
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: StudnetController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(StudentCreateRequest studentCreate)
         {
+            BaseResponse baseResponse = new BaseResponse();
             try
             {
-                return RedirectToAction(nameof(Index));
+                studentCreate.creationDate = DateTime.Now;
+                studentCreate.creationUser = 1;
+                using (var httpClient = new HttpClient(this.httpClientHandler))
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(studentCreate), Encoding.UTF8, "application/json");
+
+                    var response = await httpClient.PostAsync("http://localhost:51810/api/Student/SaveStudent", content);
+
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+
+                    baseResponse = JsonConvert.DeserializeObject<BaseResponse>(apiResponse);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Message = baseResponse.Message;
+                        return View();
+                    }
+
+                }
+
+
             }
             catch
             {
@@ -61,19 +131,65 @@ namespace itlapr.Web.Controllers
         }
 
         // GET: StudnetController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+
+            StudentResponse studentResponse = new StudentResponse();
+
+            using (var httpClient = new HttpClient(this.httpClientHandler))
+            {
+
+                var response = await httpClient.GetAsync($"http://localhost:51810/api/Student/" + id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    studentResponse = JsonConvert.DeserializeObject<StudentResponse>(apiResponse);
+                }
+                else
+                {
+                    // realizar x logica //       
+                }
+
+
+            }
+            return View(studentResponse.data);
+            
         }
 
         // POST: StudnetController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(StudentUpdateRequest studentUpdate)
         {
+            BaseResponse baseResponse = new BaseResponse();
             try
             {
-                return RedirectToAction(nameof(Index));
+                studentUpdate.modifyDate = DateTime.Now;
+                studentUpdate.modifyUser = 1;
+                using (var httpClient = new HttpClient(this.httpClientHandler))
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(studentUpdate), Encoding.UTF8, "application/json");
+
+                   var response = await httpClient.PostAsync("http://localhost:51810/api/Student/UpdateStudent", content);
+                   
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+
+                    baseResponse = JsonConvert.DeserializeObject<BaseResponse>(apiResponse);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Message = baseResponse.Message;
+                        return View();
+                    }
+
+                }
+
+               
             }
             catch
             {
@@ -81,25 +197,6 @@ namespace itlapr.Web.Controllers
             }
         }
 
-        // GET: StudnetController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: StudnetController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

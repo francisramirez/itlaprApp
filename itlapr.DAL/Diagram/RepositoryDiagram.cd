@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="itlapr.DAL.Core.RepositoryBase&lt;TEntity&gt;">
+    <Position X="3.75" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAQCAIAAAAAAAQAAAAABBAACAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Core\RepositoryBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="itlapr.DAL.Repositories.DepartmentRepository">
+    <Position X="7.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAgAIAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Repositories\DepartmentRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="itlapr.DAL.Repositories.StudentRepository">
+    <Position X="0.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAAIAAAAQACAAABBAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\StudentRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="itlapr.DAL.Core.IRepositoryBase&lt;TEntity&gt;">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAIAAAAAAAQAAAAABBAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Core\IRepositoryBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

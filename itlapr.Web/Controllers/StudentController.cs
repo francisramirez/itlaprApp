@@ -1,4 +1,5 @@
-﻿using itlapr.Web.Models.Request;
+﻿using itlapr.Web.ApiServices.Interfaces;
+using itlapr.Web.Models.Request;
 using itlapr.Web.Models.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,15 @@ namespace itlapr.Web.Controllers
     public class StudentController : Controller
     {
         HttpClientHandler httpClientHandler = new HttpClientHandler();
+        private readonly IStudentApiService studentApiService;
         private readonly ILogger<StudentController> logger;
         private readonly IConfiguration configuration;
 
-        public StudentController(ILogger<StudentController> logger,
+        public StudentController(IStudentApiService studentApiService,
+                                 ILogger<StudentController> logger,
                                  IConfiguration configuration)
         {
+            this.studentApiService = studentApiService;
             this.logger = logger;
             this.configuration = configuration;
         }
@@ -29,34 +33,17 @@ namespace itlapr.Web.Controllers
         {
             StudentListResponse studentListResponse = new StudentListResponse();
 
-            try
+            studentListResponse = await this.studentApiService.GetStudents();
+
+            if (!studentListResponse.success)
             {
-                using (var httpClient = new HttpClient(this.httpClientHandler))
-                {
-                    var response = await httpClient.GetAsync("http://localhost:51810/api/Student");
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        studentListResponse = JsonConvert.DeserializeObject<StudentListResponse>(apiResponse);
-                    }
-                    else
-                    {
-                        // realizar x logica //       
-                    }
-
-
-                }
-
-                return View(studentListResponse.data);
-
+                return View();
             }
-            catch (Exception ex)
-            {
-                this.logger.LogError("Error obteniendo los estudiantes", ex.ToString());
-            }
-            return View();
+
+            return View(studentListResponse.data);
+
         }
+
 
 
         public async Task<ActionResult> Details(int id)
@@ -64,23 +51,7 @@ namespace itlapr.Web.Controllers
 
             StudentResponse studentResponse = new StudentResponse();
 
-            using (var httpClient = new HttpClient(this.httpClientHandler))
-            {
-
-                var response = await httpClient.GetAsync($"http://localhost:51810/api/Student/" + id);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    studentResponse = JsonConvert.DeserializeObject<StudentResponse>(apiResponse);
-                }
-                else
-                {
-                    // realizar x logica //       
-                }
-
-
-            }
+            studentResponse = await this.studentApiService.GetStudent(id);
 
             return View(studentResponse.data);
         }
@@ -154,7 +125,7 @@ namespace itlapr.Web.Controllers
 
             }
             return View(studentResponse.data);
-            
+
         }
 
         // POST: StudnetController/Edit/5
@@ -171,8 +142,8 @@ namespace itlapr.Web.Controllers
                 {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(studentUpdate), Encoding.UTF8, "application/json");
 
-                   var response = await httpClient.PostAsync("http://localhost:51810/api/Student/UpdateStudent", content);
-                   
+                    var response = await httpClient.PostAsync("http://localhost:51810/api/Student/UpdateStudent", content);
+
                     string apiResponse = await response.Content.ReadAsStringAsync();
 
                     baseResponse = JsonConvert.DeserializeObject<BaseResponse>(apiResponse);
@@ -189,7 +160,7 @@ namespace itlapr.Web.Controllers
 
                 }
 
-               
+
             }
             catch
             {
